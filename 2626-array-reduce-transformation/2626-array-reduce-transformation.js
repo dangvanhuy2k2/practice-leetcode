@@ -5,8 +5,5 @@
  * @return {number}
  */
 var reduce = function(nums, fn, init) {
-    for(const num of nums) {
-        init = fn(init, num);
-    }
-    return init;
+    return nums.reduce((acc, num) => fn(acc , num), init);
 };
