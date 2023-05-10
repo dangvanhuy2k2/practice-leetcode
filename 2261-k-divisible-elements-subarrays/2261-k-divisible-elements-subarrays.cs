@@ -1,6 +1,5 @@
 public class Solution
 {
-    List<int> a = new List<int>();
     int ans = 0;
     public class TrieNode
     {
@@ -12,40 +11,35 @@ public class Solution
             this.isEnd = isEnd;
         }
     }
-    public void dfs(TrieNode curNode, int i)
+    public void dfs(TrieNode curNode, int i, int end, int[] nums)
     {
-        if (i >= a.Count) return;
-        int val = a[i];
+        if (i >= end) return;
+        int val = nums[i];
         if (!curNode.childs.ContainsKey(val))
         {
             ++ans;
             TrieNode newNode = new TrieNode(true);
             curNode.childs[val] = newNode;
         }
-        dfs(curNode.childs[val], i + 1);
+        dfs(curNode.childs[val], i + 1, end, nums);
     }
     public int CountDistinct(int[] nums, int k, int p)
     {
         TrieNode root = new TrieNode();
-        int cnt = 0;
-        for (int i = 0; i < nums.Length; i++)
+        int cnt = 0, l = 0;
+        for (int r = 0; r < nums.Length; r++)
         {
-            int val = nums[i];
+            int val = nums[r];
             cnt += val % p != 0 ? 0 : 1;
-            if (cnt > k)
+            if (cnt <= k) continue;
+            for (int j = l; j < r; ++j) dfs(root, j, r, nums);
+            while (cnt > k)
             {
-                for (int j = 0; j < a.Count; ++j) dfs(root, j);
-                while (cnt > k)
-                {
-                    int num = a[0];
-                    a.RemoveAt(0);
-                    cnt -= num % p != 0 ? 0 : 1;
-                }
+                int num = nums[l++];
+                cnt -= num % p != 0 ? 0 : 1;
             }
-            a.Add(val);
-
         }
-        for (int j = 0; j < a.Count; ++j) dfs(root, j);
+        for (int j = l; j < nums.Length; ++j) dfs(root, j, nums.Length, nums);
         return ans;
     }
 }
