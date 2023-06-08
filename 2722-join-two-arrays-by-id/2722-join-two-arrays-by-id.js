@@ -20,11 +20,8 @@ var join = function (arr1, arr2) {
     }
     for (const o2 of arr2) {
         const { id } = o2;
-        if (!m.has(id)) ans.push(o2);
-        else {
-            const o1 = m.get(id);
-            m.set(id, mergeTwoObj(o1, o2));
-        }
+        const o1 = m.get(id) || {};
+        m.set(id, mergeTwoObj(o1, o2));
     }
 
     for (const o of m.values()) {
