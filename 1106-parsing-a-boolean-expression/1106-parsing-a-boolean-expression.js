@@ -3,14 +3,8 @@
  * @return {boolean}
  */
 var parseBoolExpr = function (expression) {
-    const hasExpress = (str) => {
-        for (const c of str) {
-            if (c === 'f' || c === 't') continue;
-            return true;
-        }
-        return false;
-    }
     const dfs = (expression) => {
+        console.log("expression: ", expression)
         const len = expression.length;
         if (len === 1) return expression === "f" ? false : true;
         const c = expression.charAt(0);
